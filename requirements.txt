@@ -8,6 +8,3 @@ dnspython==2.6.0           # Required for mongodb+srv:// connection strings
 python-dotenv==1.0.0       # Loads .env for local development
 sse-starlette==2.1.0       # Server-Sent Events support for FastAPI
 pydantic==2.7.0            # Data validation for request bodies
-
-
-mongodb+srv://sdePort3:SDEPORT3@banglacluster.ntnbhcq.mongodb.net/?appName=BanglaCluster
