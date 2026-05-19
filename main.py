@@ -77,7 +77,7 @@ log.info(f"Connected to MongoDB Atlas — database: {MONGO_DB}")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-_REAL_FILTER = {"is_sample": {"$ne": True}}   # exclude demo/sample documents
+_REAL_FILTER = {}   # exclude demo/sample documents "is_sample": {"$ne": True}
 
 
 def _clean(value):
