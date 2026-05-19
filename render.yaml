@@ -1,0 +1,40 @@
+# render.yaml — Infrastructure as Code for Render.com
+# This file tells Render exactly how to build and run the FloodWatch Monitor.
+# Commit it to your Git repository — Render reads it automatically on deploy.
+#
+# Reference: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: floodwatch-monitor
+    runtime: python
+    region: singapore            # Closest region to Malaysia — lower latency
+    plan: free                   # Free tier (spins down after 15min inactivity)
+
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+    # Health check — Render pings this to confirm the service is up
+    healthCheckPath: /api/health
+
+    # Scaling — free tier is single instance only
+    numInstances: 1
+
+    # Environment variables
+    # 'sync: false' means the value must be set manually in the Render dashboard.
+    # Never commit real secrets to this file.
+    envVars:
+      - key: MONGO_URI
+        sync: false              # Set this in Render dashboard: your Atlas connection string
+
+      - key: MONGO_DB
+        value: flood_monitor     # Database name (committed — not sensitive)
+
+      - key: POLL_INTERVAL_SECONDS
+        value: "5"               # How often SSE polls MongoDB for new events
+
+      - key: MAX_FEED_EVENTS
+        value: "50"              # Max events buffered per SSE stream
+
+      - key: PYTHON_VERSION
+        value: "3.11.0"          # Pin Python version for reproducibility
